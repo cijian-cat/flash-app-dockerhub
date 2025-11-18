@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ vars.DOCKERHUB_USERNAME }}" --password-stdin
 
       # 用 commit hash 作为镜像 tag（方便回滚）
       - name: Set image tag
@@ -26,10 +26,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest \
-                       -t ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ steps.vars.outputs.TAG }} .
+          docker build -t ${{ vars.DOCKERHUB_USERNAME }}/myapp:latest \
+                       -t ${{ vars.DOCKERHUB_USERNAME }}/myapp:${{ steps.vars.outputs.TAG }} .
 
       - name: Push Docker image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ steps.vars.outputs.TAG }}
+          docker push ${{ vars.DOCKERHUB_USERNAME }}/myapp:latest
+          docker push ${{ vars.DOCKERHUB_USERNAME }}/myapp:${{ steps.vars.outputs.TAG }}
